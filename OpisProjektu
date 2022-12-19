@@ -1,5 +1,5 @@
 Temat:  Analiza  danych gry league of legends
-W pliku Dane dwa pliki z danymi z rozegranych meczy.
+W pliku stat1 i stat2 dwa pliki z danymi z rozegranych meczy.
 Cel programu: Wypisać możliwe opcje statystyk do pokazania:
                       1 Czy drużyna wygrana miała więcej złota czy zabiła więcej minionów?
                       2 Czy robienie dodatkowych zadań pomogło w wygranej
