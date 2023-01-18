@@ -1,0 +1,12 @@
+﻿  Function.cpp
+  Main.cpp
+  Stats.cpp
+C:\Users\Michal\Desktop\Obiektowe\ProjectObiektowe\ProjectObiektowe\Stats.cpp(12,20): warning C4244: "return": konwersja z "_Ty" do "int", możliwa utrata danych
+          with
+          [
+              _Ty=float
+          ]
+C:\Users\Michal\Desktop\Obiektowe\ProjectObiektowe\ProjectObiektowe\Stats.cpp(65,23): warning C4267: "return": konwersja z "size_t" do "int", możliwa utrata danych
+C:\Users\Michal\Desktop\Obiektowe\ProjectObiektowe\ProjectObiektowe\Stats.cpp(116,23): warning C4267: "return": konwersja z "size_t" do "int", możliwa utrata danych
+  Generowanie kodu...
+  ProjectObiektowe.vcxproj -> C:\Users\Michal\Desktop\Obiektowe\ProjectObiektowe\x64\Debug\ProjectObiektowe.exe
