@@ -1,7 +1,9 @@
 Temat:  Analiza  danych gry league of legends
-W pliku stat1 i stat2 dwa pliki z danymi z rozegranych meczy.
+W pliku Zeszyt1 i Zeszyt2 dwa pliki z danymi z rozegranych meczy jeden statystyki popierwszych 15 minutach gry, drugi z calej gry.
 Cel programu: Wypisać możliwe opcje statystyk do pokazania:
                       1 Czy drużyna wygrana miała więcej złota czy zabiła więcej minionów?
-                      2 Czy robienie dodatkowych zadań pomogło w wygranej
+                      2 Czy zabicie dodatkowych stworow pomogło w wygranej?
                       3...
 Ogólny wynik analizy na czym najlepiej skupić się podczas meczu aby zapewnić sobie wygraną
+https://www.kaggle.com/datasets/benfattori/league-of-legends-diamond-games-first-15-minutes?resource=download zeszyt1
+https://www.kaggle.com/datasets/princic1837592/league-of-legends-1210-diamond-games?select=timeline_DIAMOND_999.csv zeszyt2
