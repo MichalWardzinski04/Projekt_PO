@@ -24,7 +24,6 @@ public:
 	int getHeralds(int index) const;
 	int getFirstBaron(int index) const;
 	int getBarons(int index) const;
-	void getScore(int index) const;
 	int getSize() const;
 
 private:
