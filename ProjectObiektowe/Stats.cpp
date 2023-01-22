@@ -47,20 +47,7 @@ int Stats::getFirstBaron(int index) const {
 int Stats::getBarons(int index) const {
 	return Matches[index].Barons;
 }
-void Stats::getScore(int index) const {
-	getWin(index);
-	getGold(index);
-	getExp(index);
-	getWardPlaced(index);
-	getWardDestroyed(index);
-	getFirstBlood(index);
-	getKills(index);
-	getFirstInhibitor(index);
-	getInhibitors(index);
-	getHeralds(index);
-	getFirstBaron(index);
-	getBarons(index);
-}
+
 int Stats::getSize() const {
 	return Matches.size();
 }
