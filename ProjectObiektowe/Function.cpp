@@ -1,21 +1,21 @@
 #include "Function.h"
 
-//getline bierze ca≥π linie
+//getline bierze cala linie
 //linestream odczyt kazdej wartosci z osobna
 
 int  ReadData(Stats& team1, Stats& team2, string plik) {
 
 	ifstream file(plik);
 
-	if (!file.is_open()) //sprawdzenie czy plik zosat≥ otwarty
+	if (!file.is_open()) //sprawdzenie czy plik zosat≈Ç otwarty
 	{
 		cerr << "Error file is not open" << endl;
 		return -1;
 	}
 
-	string line;		 //zmienna string dla nag≥owka
-	getline(file, line); //czytanie nag≥owna
-	float time = 0;
+	string line;		 //zmienna typu string dla wczytania danych
+	getline(file, line); //czytanie nag≈Çowna
+	float time = 0; // zmiennne pomicnicze do wczytania danych
 	int win = 0;
 	int gold1 = 0, gold2 = 0;
 	int exp1 = 0, exp2 = 0;
@@ -28,28 +28,29 @@ int  ReadData(Stats& team1, Stats& team2, string plik) {
 	int Heralds1 = 0, Heralds2 = 0;
 	int FirstBaron = 0;
 	int Barons1 = 0, Barons2 = 0;
-	while (getline(file, line))
+	while (getline(file, line)) //petla wczytujaca dane wiersz po wierszu
 	{
 		stringstream linestream(line);
 		linestream >> time >> win >> gold1 >> gold2 >> exp1 >> exp2 >> WardPlaced1 >> WardPlaced2 >> WardDestroyed1
 			>> WardDestroyed2 >> FirstBlood >> Kills1 >> Kills2 >> FirstInhibitor >> Inhibitors1 >> Inhibitors2
 			>> Heralds1 >> Heralds2 >> FirstBaron >> Barons1 >> Barons2;
+
 		team1.AddTime(time);
-		team2.AddTime(time);
+		team2.AddTime(time);//dodanie czasu gry do wektora
 		int x = 0, y = 0, z = 0;
-		if (FirstBlood == -1) {
+		if (FirstBlood == -1) { //zmiana wartosci na 1 lub 0 gdy druzyna to zrobila dostaje 1 a przeciwna 0
 			FirstBlood = 0;
 			x = 1;
 		}
-		if (FirstInhibitor == -1) {
+		if (FirstInhibitor == -1) { //zmiana wartosci na 1 lub 0 gdy druzyna to zrobila dostaje 1 a przeciwna 0
 			FirstInhibitor = 0;
 			y = 1;
 		}
-		if (FirstBaron == -1) {
+		if (FirstBaron == -1) { //zmiana wartosci na 1 lub 0 gdy druzyna to zrobila dostaje 1 a przeciwna 0
 			FirstBaron = 0;
 			z = 1;
 		}
-		team1.AddMatch(win, gold1, exp1, WardPlaced1, WardDestroyed1, FirstBlood, Kills1, FirstInhibitor, Inhibitors1, Heralds1, FirstBaron, Barons1);
+		team1.AddMatch(win, gold1, exp1, WardPlaced1, WardDestroyed1, FirstBlood, Kills1, FirstInhibitor, Inhibitors1, Heralds1, FirstBaron, Barons1); //dodawanie wczytanych dadnych do wektora
 		if (win == 0) {
 			win = 1;
 		}
@@ -62,15 +63,20 @@ int  ReadData(Stats& team1, Stats& team2, string plik) {
 void AvgTime(Stats& team) {
 	int i = 0;
 	long double Suma = 0;
-	while (i < team.getSize())
+	while (i < team.getSize()) // petla sumujaca wszystkie czasy
 	{
 		Suma += team.getTime(i);
 		i++;
 	}
-	Suma = Suma / team.getSize();
-	cout << "Sredni czas gry = " << Suma;
+	Suma = Suma / team.getSize(); // srednia
+	Suma = Suma / 60000; // przeliczenie na mity z milisekund
+	cout << "Sredni czas gry = " << Suma << " minut";
 }
-void AvgWinGold(Stats& team1, Stats& team2) {
+// jesli druzyna miala wiecej czegos i wygrala zostaje to zliczone do wartosci W nastepnie podzielone przwez ilosc meczy i wyswietlone w procentach
+// kazda funkcja dziala w pofdobny sposob 
+// w przypadkach gdzie porownywane dane prawie nigdy nie sa sobie rowne przypadek tn zosaje pominiety 
+// w zabitych heraldach smokach , zniszczonych wiezach i inhibitirach, wardach itp zostaje to uwzglednioone przy pomocy zmiennej k
+void AvgWinGold(Stats& team1, Stats& team2) { 
 	int i = 0;
 	int W = 0;
 	while (i < team1.getSize()) {
@@ -105,6 +111,7 @@ void AvgWinExp(Stats& team1, Stats& team2) {
 void AvgWinWardPlaced(Stats& team1, Stats& team2) {
 	int i = 0;
 	int W = 0;
+	int k = 0;
 	while (i < team1.getSize()) {
 		if (team1.getWardPlaced(i) > team2.getWardPlaced(i)) {
 			if (team1.getWin(i)) {
@@ -116,13 +123,15 @@ void AvgWinWardPlaced(Stats& team1, Stats& team2) {
 				W++;
 			}
 		}
+		else if (team1.getWardPlaced(i) < team2.getWardPlaced(i)) k++;
 		i++;
 	}
-	cout << "Statystycznie druzyna z wieksza iloscia postawionych totemow wygrywa  " << (W / (double)team1.getSize()) * 100 << "% meczy";
+	cout << "Statystycznie druzyna z wieksza iloscia postawionych totemow wygrywa  " << (double)W / (team1.getSize() - k) * 100 << "% meczy";
 }
 void AvgWinWardDestroyed(Stats& team1, Stats& team2) {
 	int i = 0;
 	int W = 0;
+	int k = 0;
 	while (i < team1.getSize()) {
 		if (team1.getWardDestroyed(i) > team2.getWardDestroyed(i)) {
 			if (team1.getWin(i)) {
@@ -134,9 +143,10 @@ void AvgWinWardDestroyed(Stats& team1, Stats& team2) {
 				W++;
 			}
 		}
+		else if (team1.getWardDestroyed(i) < team2.getWardDestroyed(i)) k++;
 		i++;
 	}
-	cout << "Statystycznie druzyna z wieksza iloscia zniszczonych totemow wygrywa  " << (W / (double)team1.getSize()) * 100 << "% meczy";
+	cout << "Statystycznie druzyna z wieksza iloscia zniszczonych totemow wygrywa  " << (double)W / (team1.getSize() - k) * 100 << "% meczy";
 }
 void AvgWinFirstBlood(Stats& team1, Stats& team2) {
 	int i = 0;
@@ -272,19 +282,19 @@ void AvgWinBarons(Stats& team1, Stats& team2) {
 }
 
 
-
+// podobna fukcja do pierwszej wczytue dane z kolejnego pliku nie ma vektora z czasem
 int  ReadData(stats& team1, stats& team2, string plik) {
 
 	ifstream file("Zeszyt1.txt");
 
-	if (!file.is_open()) //sprawdzenie czy plik zosat≥ otwarty
+	if (!file.is_open()) //sprawdzenie czy plik zosat≈Ç otwarty
 	{
 		cerr << "Error file is not open" << endl;
 		return -1;
 	}
 
-	string line;		 //zmienna string dla nag≥owka
-	getline(file, line); //czytanie nag≥owna
+	string line;		 //zmienna string dla nag≈Çowka
+	getline(file, line); //czytanie nag≈Çowna
 
 	int win = 0;
 	int gold = 0;
@@ -357,6 +367,7 @@ void AvgWinExp(stats& team1, stats& team2) {
 void AvgWinWardPlaced(stats& team1, stats& team2) {
 	int i = 0;
 	int W = 0;
+	int k = 0;
 	while (i < team1.getSize()) {
 		if (team1.getWardPlaced(i) > team2.getWardPlaced(i)) {
 			if (team1.getWin(i)) {
@@ -368,13 +379,15 @@ void AvgWinWardPlaced(stats& team1, stats& team2) {
 				W++;
 			}
 		}
+		else if (team1.getWardPlaced(i) < team2.getWardPlaced(i)) k++;
 		i++;
 	}
-	cout << "Statystycznie druzyna z wieksza iloscia postawionych totemow wygrywa  " << (W / (double)team1.getSize()) * 100 << "% meczy";
+	cout << "Statystycznie druzyna z wieksza iloscia postawionych totemow wygrywa  " << (double)W / (team1.getSize() - k) * 100 << "% meczy";
 }
 void AvgWinWardDestroyed(stats& team1, stats& team2) {
 	int i = 0;
 	int W = 0;
+	int k = 0;
 	while (i < team1.getSize()) {
 		if (team1.getWardDestroyed(i) > team2.getWardDestroyed(i)) {
 			if (team1.getWin(i)) {
@@ -386,9 +399,10 @@ void AvgWinWardDestroyed(stats& team1, stats& team2) {
 				W++;
 			}
 		}
+		else if (team1.getWardDestroyed(i) == team2.getWardDestroyed(i)) k++;
 		i++;
 	}
-	cout << "Statystycznie druzyna z wieksza iloscia zniszczonych totemow wygrywa  " << (W / (double)team1.getSize()) * 100 << "% meczy";
+	cout << "Statystycznie druzyna z wieksza iloscia zniszczonych totemow wygrywa  " << (double)W / (team1.getSize() - k) * 100 << "% meczy";
 }
 void AvgWinFirstBlood(stats& team1, stats& team2) {
 	int i = 0;
@@ -430,6 +444,7 @@ void AvgWinKill(stats& team1, stats& team2) {
 void AvgWinEliteMonsters(stats& team1, stats& team2) {
 	int i = 0;
 	int W = 0;
+	int k = 0;
 	while (i < team1.getSize()) {
 		if (team1.getEliteMonsters(i) > team2.getEliteMonsters(i)) {
 			if (team1.getWin(i)) {
@@ -441,9 +456,10 @@ void AvgWinEliteMonsters(stats& team1, stats& team2) {
 				W++;
 			}
 		}
+		else if (team1.getEliteMonsters(i) == team2.getEliteMonsters(i)) k++;
 		i++;
 	}
-	cout << "Statystycznie druzyna z wieksza iloscia zabitych elitarnych potworow wygrywa  " << (W / (double)team1.getSize()) * 100 << "% meczy";
+	cout << "Statystycznie druzyna z wieksza iloscia zabitych elitarnych potworow wygrywa  " << (double)W / (team1.getSize() - k) * 100 << "% meczy";
 }
 
 void AvgWinDragons(stats& team1, stats& team2) {
@@ -510,12 +526,12 @@ void AvgWinMinions(stats& team1, stats& team2) {
 	int i = 0;
 	int W = 0;
 	while (i < team1.getSize()) {
-		if (team1.getTowersDestroyed(i) > team2.getTowersDestroyed(i)) {
+		if (team1.getMinions(i) > team2.getMinions(i)) {
 			if (team1.getWin(i)) {
 				W++;
 			}
 		}
-		else if (team1.getTowersDestroyed(i) < team2.getTowersDestroyed(i)) {
+		else if (team1.getMinions(i) < team2.getMinions(i)) {
 			if (team2.getWin(i)) {
 				W++;
 			}
